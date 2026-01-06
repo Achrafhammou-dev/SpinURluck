@@ -361,7 +361,7 @@
             <a href="https://burgerkingmaroc.vercel.app/" class="action-btn">
                 <i class="bi bi-shop"></i> official website
             </a>
-            <a href="feedbackbk.vercel.app" class="action-btn">
+            <a href="https://feedbackbk.vercel.app/" class="action-btn">
                 <i class="bi bi-megaphone"></i> Send Feedback
             </a>
             <p class="text-center text-white-50 small mt-4">© 2025 BURGER KING MOROCCO. ALL RIGHTS RESERVED.</p>
@@ -428,8 +428,8 @@ form.addEventListener('submit', e => {
     submitBtn.disabled = true;
 
     const formData = new URLSearchParams(new FormData(form));
-    formData.append('key', SECRET_KEY); // Sent to authorize backend
-    formData.append('action', 'register'); // Tells backend what to do
+    formData.append('key', SECRET_KEY);
+    formData.append('action', 'register');
 
     fetch(scriptURL, { 
         method: 'POST', 
@@ -448,13 +448,25 @@ form.addEventListener('submit', e => {
                 drawWheel(); 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 500);
-        } else if (response === "DUPLICATE") {
+
+        } else if (response.status === "DUPLICATE") {
             showBKAlert("OOPS!", "Already registered!", "🚫");
             submitBtn.innerHTML = "Unlock My Spin";
             submitBtn.disabled = false;  
+
+        // --- PROBLEM FIXED HERE ---
+        } else {
+            // This handles any other error (like script errors) so the button doesn't freeze
+            console.log("Unknown Status:", response);
+            showBKAlert("Error", "Something went wrong. Try again.", "⚠️");
+            submitBtn.innerHTML = "Unlock My Spin";
+            submitBtn.disabled = false;
         }
+        // --------------------------
     })
     .catch(error => {
+        console.error("Fetch Error:", error);
+        showBKAlert("Connection Error", "Email already registred");
         submitBtn.innerHTML = "Unlock My Spin";
         submitBtn.disabled = false;
     });
