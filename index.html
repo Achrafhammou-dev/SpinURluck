@@ -499,17 +499,26 @@ function drawWheel() {
     });
 }
 
-// 6. Spin Logic (Uses server-provided index)
+// 6. Spin Logic (CENTERED VERSION)
 document.getElementById('spinBtn').addEventListener('click', () => {
     if (isSpinning || !window.serverPrize) return;
     isSpinning = true;
 
-    const prizeIndex = window.serverIndex;
+    const prizeIndex = window.serverIndex; 
     const finalPrize = window.serverPrize;
 
-    const degreesPerPrize = 60;
-    const centerOfPrize = (prizeIndex * degreesPerPrize) + (degreesPerPrize / 2);
-    let stopAngle = 3600 - centerOfPrize;
+    // --- CENTERING MATH ---
+    // Segments = 60 degrees.
+    // To hit the CENTER, we need to shift by half a segment (30 degrees).
+    // Plus the rotation to get from 0 (Right) to 270 (Top).
+    // Result: 240 degrees offset.
+    
+    const segmentDegree = 60; 
+    const totalSpins = 3600; // 10 tours (3la wed l'animation)
+    const offset = 240;      // Hada howa 'secret' bach tji fl wasst
+    
+    // Formula finale
+    const stopAngle = totalSpins + offset - (prizeIndex * segmentDegree);
 
     canvas.style.transition = "transform 5s cubic-bezier(0.15, 0, 0.15, 1)";
     canvas.style.transform = `rotate(${stopAngle}deg)`;
