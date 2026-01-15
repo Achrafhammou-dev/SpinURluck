@@ -1,7 +1,9 @@
 {
   "rewrites": [
     { "source": "/index", "destination": "/index.html" },
-    { "source": "/scanner", "destination": "/scanner.html" }
+    { "source": "/scanner", "destination": "/scanner.html" },
+        { "source": "/feedabck", "destination": "/feedabck.html" }
+
 
   ],
   "redirects": [
